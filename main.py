@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Read CSV File
 data = pd.read_csv("sma.csv")
@@ -7,20 +8,24 @@ data = pd.read_csv("sma.csv")
 while True:
 
     print("\n===== Social Media Analytics Tool =====")
-    print("1. Show Complete Data")
-    print("2. Show Total Likes")
-    print("3. Show Total Comments")
-    print("4. Show Total Shares")
-    print("5. Show Highest Likes User")
-    print("6. Show Lowest Likes User")
-    print("7. Show Average Likes")
-    print("8. Show Bar Graph")
-    print("9. Exit")
+    print("1. Show complete data")
+    print("2. Show total likes")
+    print("3. Show total comments")
+    print("4. Show total shares")
+    print("5. Show highest likes user")
+    print("6. Show lowest likes user")
+    print("7. Show average likes")
+    print("8. Show bar graph indivdual")
+    print("9. Show bar graph overall")
+    print("10. Show bar combined graph ")
+    print("11. Search by user")
+    print("12. Exit")
 
-    choice = int(input("Enter your choice (1-9): "))
+
+    choice = int(input("Enter your choice (1-12): "))
 
     if choice == 1:
-        print("\nComplete Data:")
+        print("\nComplete data:")
         print(data)
 
     elif choice == 2:
@@ -53,8 +58,47 @@ while True:
         plt.show()
 
     elif choice == 9:
-        print("\nThank you for using Social Media Analytics Tool!")
+        plt.bar(["Likes","Comments","Share"],
+                [
+                    data["Likes"].sum(),
+                    data["Comments"].sum(),
+                    data["Shares"].sum()
+                ])
+        plt.title("Overall social media analyst")
+        plt.xlabel("Category name")
+        plt.ylabel("Total counts")
+        plt.show()
+
+    elif choice == 10:
+        x = np.arange(len(data["User"]))
+        width = 0.25
+         
+        plt.bar(x - width, data["Likes"], width, label="Likes")
+        plt.bar(x, data["Comments"], width, label="Comments")
+        plt.bar(x + width, data["Shares"], width, label="Shares")
+
+        plt.xticks(x, data["User"])
+        plt.title("Users Likes, Comments and Shares")
+        plt.xlabel("Users")
+        plt.ylabel("Count")
+        plt.legend()
+        plt.show()
+    
+    elif choice == 11:
+        name = input("Enter User Name: ")
+
+        user = data[data["User"].str.lower() == name.lower()]
+
+        if not user.empty:
+         print("\nUser Details:")
+         print(user)
+        else:
+         print("User not found!")
+        
+        
+    elif choice == 12:
+        print("\nThank you for using Social Media Analytics Tool")
         break
 
     else:
-        print("\nInvalid Choice! Please enter a number between 1 and 9.")
+        print("\nInvalid Choice! Please enter a number between 1 and 12")
